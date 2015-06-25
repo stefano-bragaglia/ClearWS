@@ -55,13 +55,6 @@ public class Controller {
 		return chunker;
 	}
 
-	public static void main(String[] args) {
-		Controller controller = new Controller();
-
-		Message message = controller.process("This is a test! This is another test.");
-		System.out.println(message);
-	}
-
 	@RequestMapping("/process")
 	public Message process(@RequestParam(value = "content", defaultValue = "") String content) {
 
