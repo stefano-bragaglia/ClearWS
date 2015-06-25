@@ -1,0 +1,56 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.4.RELEASE")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+applicationDefaultJvmArgs = ["-Xss32M", "-Xmx8G", "-XX:+UseG1GC", "-XX:+UseStringDeduplication"]
+
+jar {
+    baseName = 'ClearWS'
+    version =  '0.1.0'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+def vSLF4j = "1.7.12"
+def vLogBack = "1.1.3"
+
+def vOpenNLP = "1.6.1-SNAPSHOT"
+
+def vClearNLP = "3.1.2"
+def vClearNLPDictionary = "3.1"
+
+dependencies {
+    // SentenceFinder
+    compile "org.apache.opennlp:opennlp-tools:${vOpenNLP}"
+
+    // ClearNLP - The general import
+    compile "edu.emory.clir:clearnlp:${vClearNLP}"
+
+    // ClearNLP - The dictionary, used by many ClearNLP components
+    compile "edu.emory.clir:clearnlp-dictionary:${vClearNLPDictionary}"
+    compile "edu.emory.clir:clearnlp-global-lexica:${vClearNLPDictionary}"
+
+    // ClearNLP - The general domain
+    compile "edu.emory.clir:clearnlp-general-en-pos:3.2"
+    compile "edu.emory.clir:clearnlp-general-en-dep:3.2"
+    compile "edu.emory.clir:clearnlp-general-en-ner:3.1"
+    compile "edu.emory.clir:clearnlp-general-en-ner-gazetteer:3.0"
+
+    compile("org.springframework.boot:spring-boot-starter-web")
+    testCompile("junit:junit")
+}
