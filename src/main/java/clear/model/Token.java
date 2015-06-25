@@ -57,4 +57,16 @@ public class Token {
 		return lemma;
 	}
 
+	@Override
+	public String toString() {
+		return "Token{" +
+				"start=" + start +
+				", end=" + end +
+				", index=" + index +
+				", text='" + text + '\'' +
+				", posTag='" + posTag + '\'' +
+				", chunkTag='" + chunkTag + '\'' +
+				", lemma='" + lemma + '\'' +
+				'}';
+	}
 }

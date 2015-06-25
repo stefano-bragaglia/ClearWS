@@ -55,6 +55,13 @@ public class Controller {
 		return chunker;
 	}
 
+	public static void main(String[] args) {
+		Controller controller = new Controller();
+
+		Message message = controller.process("This is a test! This is another test.");
+		System.out.println(message);
+	}
+
 	@RequestMapping("/process")
 	public Message process(@RequestParam(value = "content", defaultValue = "") String content) {
 
@@ -66,24 +73,30 @@ public class Controller {
 				component.process(tree);
 			}
 
-			int size = 0;
 			int last = pos;
 			int first = -1;
-			String[] texts = new String[tree.size()];
-			String[] posTags = new String[tree.size()];
-			String[] lemmas = new String[tree.size()];
-			for (DEPNode node : tree) {
-				texts[size] = node.getWordForm();
-				posTags[size] = node.getPOSTag();
-				lemmas[size] = node.getLemma();
-				size += 1;
+			int size = tree.size();
+			String[] texts = new String[size - 1];
+			String[] posTags = new String[size - 1];
+			String[] chunkTags = new String[size - 1];
+			String[] lemmas = new String[size - 1];
+			for (int i = 1; i < size; i++) {
+				DEPNode node = tree.get(i);
 				String text = node.getWordForm();
 				if (first < 0) {
 					first = content.indexOf(text, pos);
 				}
 				last = content.indexOf(text, last) + text.length();
+				texts[i - 1] = text;
+				posTags[i - 1] = node.getPOSTag();
+				chunkTags[i - 1] = posTags[i - 1];
+				lemmas[i - 1] = node.getLemma();
 			}
-			Span[] spans = chunker.chunkAsSpans(texts, posTags);
+			for (Span span : chunker.chunkAsSpans(texts, posTags)) {
+				for (int i = span.getStart(); i < span.getEnd(); i++) {
+					chunkTags[i] = span.getType();
+				}
+			}
 			if (first < 0) {
 				first = pos;
 			}
@@ -92,7 +105,7 @@ public class Controller {
 			for (int i = 0; i < texts.length; i++) {
 				int start = content.indexOf(texts[i], pos);
 				int end = start + texts[i].length();
-				tokens.add(new Token(start, end, i, texts[i], posTags[i], spans[i].getType(), lemmas[i]));
+				tokens.add(new Token(start, end, i, texts[i], posTags[i], chunkTags[i], lemmas[i]));
 				pos = end;
 			}
 			sentences.add(new Sentence(first, last, content.substring(first, last), tokens));
@@ -114,5 +127,4 @@ public class Controller {
 		tokenizer = NLPUtils.getTokenizer(TLanguage.ENGLISH);
 		chunker = getChunker();
 	}
-
 }

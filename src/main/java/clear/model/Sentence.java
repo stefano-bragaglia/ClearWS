@@ -42,4 +42,15 @@ public class Sentence {
 	public int getSize() {
 		return size;
 	}
+
+	@Override
+	public String toString() {
+		return "Sentence{" +
+				"start=" + start +
+				", end=" + end +
+				", content='" + content + '\'' +
+				", tokens=" + tokens +
+				", size=" + size +
+				'}';
+	}
 }

@@ -23,4 +23,13 @@ public class Message {
 	public List<Sentence> getSentences() {
 		return sentences;
 	}
+
+	@Override
+	public String toString() {
+		return "Message{" +
+				"id=" + id +
+				", sentences=" + sentences +
+				'}';
+	}
+
 }
