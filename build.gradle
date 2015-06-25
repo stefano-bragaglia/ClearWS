@@ -7,6 +7,7 @@ buildscript {
     }
 }
 
+apply plugin: 'war'
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
@@ -21,6 +22,11 @@ jar {
     version =  '0.1.0'
 }
 
+war {
+    baseName = 'nlp'
+//    version =  '0.1.0'
+}
+
 repositories {
     mavenLocal()
     mavenCentral()
@@ -33,6 +39,10 @@ def vOpenNLP = "1.6.1-SNAPSHOT"
 
 def vClearNLP = "3.1.2"
 def vClearNLPDictionary = "3.1"
+
+configurations {
+    providedRuntime
+}
 
 dependencies {
     // SentenceFinder
@@ -52,5 +62,6 @@ dependencies {
     compile "edu.emory.clir:clearnlp-general-en-ner-gazetteer:3.0"
 
     compile("org.springframework.boot:spring-boot-starter-web")
+    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
     testCompile("junit:junit")
 }
