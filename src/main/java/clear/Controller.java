@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import clear.model.Message;
@@ -58,6 +59,7 @@ public class Controller {
 	@RequestMapping("/process")
 	public Message process(@RequestParam(value = "content", defaultValue = "") String content) {
 
+		AtomicInteger inc = new AtomicInteger(0);
 		int pos = 0;
 		List<Sentence> sentences = new ArrayList<>();
 		for (List<String> phrase : tokenizer.segmentize(new ByteArrayInputStream(content.getBytes()))) {
@@ -98,7 +100,7 @@ public class Controller {
 			for (int i = 0; i < texts.length; i++) {
 				int start = content.indexOf(texts[i], pos);
 				int end = start + texts[i].length();
-				tokens.add(new Token(start, end, i, texts[i], posTags[i], chunkTags[i], lemmas[i]));
+				tokens.add(new Token(start, end, inc.getAndIncrement(), texts[i], posTags[i], chunkTags[i], lemmas[i]));
 				pos = end;
 			}
 			sentences.add(new Sentence(first, last, content.substring(first, last), tokens));
