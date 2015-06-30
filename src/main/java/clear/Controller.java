@@ -68,10 +68,6 @@ public class Controller {
 				component.process(tree);
 			}
 
-			for (String tag : tree.getNamedEntityTags()) {
-				System.out.println(tag);
-			}
-
 			int last = pos;
 			int first = -1;
 			int size = tree.size();
