@@ -68,15 +68,21 @@ public class Controller {
 				component.process(tree);
 			}
 
+			for (String tag : tree.getNamedEntityTags()) {
+				System.out.println(tag);
+			}
+
 			int last = pos;
 			int first = -1;
 			int size = tree.size();
 			String[] texts = new String[size - 1];
 			String[] posTags = new String[size - 1];
 			String[] chunkTags = new String[size - 1];
+			String[] namedTags = new String[size - 1];
 			String[] lemmas = new String[size - 1];
 			for (int i = 1; i < size; i++) {
 				DEPNode node = tree.get(i);
+
 				String text = node.getWordForm();
 				if (first < 0) {
 					first = content.indexOf(text, pos);
@@ -85,6 +91,7 @@ public class Controller {
 				texts[i - 1] = text;
 				posTags[i - 1] = node.getPOSTag();
 				chunkTags[i - 1] = posTags[i - 1];
+				namedTags[i - 1] = node.getNamedEntityTag();
 				lemmas[i - 1] = node.getLemma();
 			}
 			for (Span span : chunker.chunkAsSpans(texts, posTags)) {
@@ -100,7 +107,8 @@ public class Controller {
 			for (int i = 0; i < texts.length; i++) {
 				int start = content.indexOf(texts[i], pos);
 				int end = start + texts[i].length();
-				tokens.add(new Token(start, end, inc.getAndIncrement(), texts[i], posTags[i], chunkTags[i], lemmas[i]));
+				tokens.add(new Token(start, end, inc.getAndIncrement(), texts[i],
+									 posTags[i], chunkTags[i], namedTags[i], lemmas[i]));
 				pos = end;
 			}
 			sentences.add(new Sentence(first, last, content.substring(first, last), tokens));

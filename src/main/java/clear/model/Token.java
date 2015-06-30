@@ -17,15 +17,19 @@ public class Token {
 
 	private String chunkTag;
 
+	private String namedTag;
+
 	private String lemma;
 
-	public Token(int start, int end, int index, String text, String posTag, String chunkTag, String lemma) {
+	public Token(int start, int end, int index, String text, String posTag, String chunkTag, String namedTag, String
+			lemma) {
 		this.start = start;
 		this.end = end;
 		this.index = index;
 		this.text = text;
 		this.posTag = posTag;
 		this.chunkTag = chunkTag;
+		this.namedTag = namedTag;
 		this.lemma = lemma;
 	}
 
@@ -53,6 +57,10 @@ public class Token {
 		return chunkTag;
 	}
 
+	public String getNamedTag() {
+		return namedTag;
+	}
+
 	public String getLemma() {
 		return lemma;
 	}
@@ -66,6 +74,7 @@ public class Token {
 				", text='" + text + '\'' +
 				", posTag='" + posTag + '\'' +
 				", chunkTag='" + chunkTag + '\'' +
+				", namedTag='" + namedTag + '\'' +
 				", lemma='" + lemma + '\'' +
 				'}';
 	}

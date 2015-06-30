@@ -15,12 +15,7 @@ apply plugin: 'spring-boot'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-applicationDefaultJvmArgs = ["-Xss32M", "-Xmx8G", "-XX:+UseG1GC", "-XX:+UseStringDeduplication"]
-
-jar {
-    baseName = 'ClearWS'
-    version =  '0.1.0'
-}
+applicationDefaultJvmArgs = ["-Xmx6G", "-XX:+UseG1GC", "-XX:+UseStringDeduplication"] // "-Xss32M",
 
 war {
     baseName = 'nlp'
@@ -66,3 +61,11 @@ dependencies {
 
     testCompile("junit:junit")
 }
+
+//task deploy << {
+//    Exec {
+//        executable 'scp'
+//        args 'build/libs/ClearWS-0.1.0.jar stefano@sbreighs.no-ip.biz:/Users/stefano/'.split()
+//    }
+//}
+
